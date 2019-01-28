@@ -74,15 +74,16 @@ ANDの符号変換だけで良い<br>
 ## 1.2 パーセプトロンの実装
 
 ``` python
-def AND(x1, x2):
-    w1, w2, theta = 1, 1, 1
-    return int(x1*w1 + x2*w2 <= theta)
+def AND(x1, x2, w1=1, w2=1, theta=1):
+    theta = 1, 1, 1
+    y = x1*w1 + x2*w2
+    return int(y<=theta)
 ```
 +++
 
 ### 式変換（閾値からバイアスへ）
 
-$\theta \rightarrow -b$
+$\theta \rightarrow -b$して移項
 
 `\[
 y = 
@@ -91,3 +92,13 @@ y =
     1 \ \left( b + w_1x_1 + w_2x_2 >    0 \right)
 \end{cases}
 \]`
+
+``` python
+def AND(x1, x2, w1=1, w2=1, b=-1):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    
+    y = np.sum(w*x) + b
+    return int(y>0)
+```
