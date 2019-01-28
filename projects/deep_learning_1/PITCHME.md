@@ -78,11 +78,16 @@ def AND(x1, x2):
     w1, w2, theta = 1, 1, 1
     return int(x1*w1 + x2*w2 <= theta)
 ```
-
-重みとバイアスの導入
-
-``` python
-a = x
-```
-
 +++
+
+### 式変換（閾値からバイアスへ）
+
+`\theta \rightarrow -b`
+
+`\[
+y = 
+\begin{cases}
+    0 \ \left( b + w_1x_1 + w_2x_2 \leq 0 \right) \\
+    1 \ \left( b + w_1x_1 + w_2x_2 >    0 \right)
+\end{cases}
+\]`
