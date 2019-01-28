@@ -9,6 +9,11 @@
 - ディープラーニング
 
 `\[
+\left( \sum_{k=1}^n a_k b_k \right)^{\!\!2} \leq
+ \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+\]`
+
+`\[
 y = \left\{ 
 0 \left( w_1x_1 + w_2x_2 \leq \theta \right( \\
 1 \left( w_1x_1 + w_2x_2 >    \theta \right)
