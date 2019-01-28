@@ -27,5 +27,5 @@ Blah x3
 
 `\[
 y = \left\{ 0 \left( w_1x_1 + w_2x_2 \leq \theta \right( \\
-1 \left( w_1x_1 + w_2x_2 > \theta \right)`
+1 \left( w_1x_1 + w_2x_2 > \theta \right)
 \]`
