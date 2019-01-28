@@ -82,7 +82,7 @@ def AND(x1, x2):
 
 ### 式変換（閾値からバイアスへ）
 
-`\theta \rightarrow -b`
+$\theta \rightarrow -b$
 
 `\[
 y = 
