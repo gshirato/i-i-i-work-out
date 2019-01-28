@@ -26,7 +26,7 @@ Blah x3
 ニューロンの発火閾値$\theta$
 
 $$ 
-y = \left{
+y = \left\{
 0 (w_1x_1 + w_2x_2 \leq \theta) \\
 1 (w_1x_1 + w_2x_2 > \theta)
 $$
