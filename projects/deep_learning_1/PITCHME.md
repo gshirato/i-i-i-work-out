@@ -93,6 +93,10 @@ y =
 \end{cases}
 \]`
 
++++
+
+### コード
+
 ``` python
 def AND(x1, x2, w1=1, w2=1, b=-1):
     
@@ -101,4 +105,25 @@ def AND(x1, x2, w1=1, w2=1, b=-1):
     
     y = np.sum(w*x) + b
     return int(y>0)
+
 ```
++++
+
+### NAND
+``` python
+# 重みとバイアスのみ異なる！
+def NAND(x1, x2, w1=-1, w2=-1, b=1):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    return int(y>0)
+    
+def OR(x1, x2, w1=0.5, w2=0.5, b=-0.2):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    return int(y>0)
+```
+下位関数にする？
