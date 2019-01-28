@@ -9,7 +9,10 @@
 - ディープラーニング
 
 `\[
-y = \left\{ 0 \left( w_1x_1 + w_2x_2 
+\begin{cases}
+    case1 \\
+    case2
+  \end{cases}
 \]`
 
 ---
