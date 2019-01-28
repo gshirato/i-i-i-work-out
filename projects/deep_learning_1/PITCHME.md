@@ -20,7 +20,14 @@ Blah x3
 
 +++
 
+## パーセプトロンの動作原理
+
+入力信号`x_1, x_2`, 出力信号`y`, 重み`w_1, w_2`について\
+ニューロンの発火閾値`\theta`
+
 `\[
-\left( \sum_{k=1}^n a_k b_k \right)^{\!\!2} \leq
- \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+  
+y = \left\{
+0 (w_1x_1 + w_2x_2 \leq \theta) \\
+1 (w_1x_1 + w_2x_2 > \theta)
 \]`
