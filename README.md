@@ -3,6 +3,7 @@
 feat. LMFAO
 
 ## GitPitch
+(url: https://gitpitch.com/docs/git/branch-many-slideshows/)
 
 template: https://gitpitch.com/?username/?repo?p=$rep
 
