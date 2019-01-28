@@ -8,6 +8,12 @@
 - 畳み込みニューラルネットワーク
 - ディープラーニング
 
+`\[
+y = \left\{ 
+0 \left( w_1x_1 + w_2x_2 \leq \theta \right( \\
+1 \left( w_1x_1 + w_2x_2 >    \theta \right)
+\]`
+
 ---
 
 # 1. パーセプトロン
@@ -25,7 +31,4 @@ Blah x3
 入力信号$x_1, x_2$, 出力信号$y$, 重み$w_1, w_2$について\
 ニューロンの発火閾値$\theta$
 
-`\[
-y = \left\{ 0 \left( w_1x_1 + w_2x_2 \leq \theta \right( \\
-1 \left( w_1x_1 + w_2x_2 > \theta \right)
-\]`
+
