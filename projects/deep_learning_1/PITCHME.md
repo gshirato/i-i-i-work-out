@@ -9,10 +9,11 @@
 - ディープラーニング
 
 `\[
+y = 
 \begin{cases}
-    case1 \\
-    case2
-  \end{cases}
+    0 \left( w_1x_1 + w_2x_2 \leq \theta \right( \\
+    1 \left( w_1x_1 + w_2x_2 >    \theta \right)
+\end{cases}
 \]`
 
 ---
@@ -34,7 +35,5 @@ Blah x3
 
 
 `\[
-y = \left\{ 
-0 \left( w_1x_1 + w_2x_2 \leq \theta \right( 
-1 \left( w_1x_1 + w_2x_2 >    \theta \right)
+
 \]`
