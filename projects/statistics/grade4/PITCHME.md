@@ -30,7 +30,7 @@
 +++
 
 <canvas data-chart="bar">
-<!-- 
+
 {
  "data": {
   "labels": ["Soccer"," Rugby"," Baseball"," Tennis"," Hockey"],
@@ -43,5 +43,5 @@
  }, 
  "options": { "responsive": "true" }
 }
--->
+
 </canvas>
