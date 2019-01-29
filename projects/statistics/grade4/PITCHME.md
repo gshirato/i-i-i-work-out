@@ -57,3 +57,10 @@
 </canvas>
 
 
+<canvas data-chart="bar">
+
+
+    Sports, Soccer, Rugby, Baseball, Tennis, Hockey
+    Sports,     50, 30,    25,       35,     10
+
+</canvas>
