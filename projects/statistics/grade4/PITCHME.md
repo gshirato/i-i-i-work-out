@@ -19,15 +19,9 @@
 
 ### この学校はどのスポーツが人気？
 
-<canvas data-chart="bar">
-
-
-    Sports, Soccer, Rugby, Baseball, Tennis, Hockey
-    Sports,     50, 30,    25,       35,     10
-
-</canvas>
-
-+++
+150人のうち3分の1がサッカーが好き<br>
+*ばらついている*=好きなスポーツはそれぞれちがう<br>
+分布 = ばらつきの様子
 
 <canvas data-chart="bar">
 <!--
@@ -57,10 +51,56 @@
 </canvas>
 
 
++++
+
+>>>平均x人がサッカー好きで，分散がいくつで～～・
+
+データの特徴を知る→記述統計学
+
+>>>他の学校でもw人がサッカー好きだろう
+
+知らないデータの予測→推測統計学
+
+---
+
+## グラフ
+
++++
+
+### ポイント
+
+1. データの種類を判断する
+2. データの種類・内容にあったグラフを選ぶ
+
++++
+
+### 棒グラフ
+
+他のものとの比較に役立つ
+
 <canvas data-chart="bar">
-
-
-    Sports, Soccer, Rugby, Baseball, Tennis, Hockey
-    Sports,     50, 30,    25,       35,     10
-
+<!--
+{
+ "data": {
+  "labels": ["ボスニア"," オランダ"," 日本"," ナイジェリア"," ベトナム"],
+  "datasets": [
+   {
+    "data":[183.9, 183.8, 170.7, 163.8, 162.1],
+    "label":"Sports","backgroundColor":"[rgba(20,220,220,.8), rgba(20,22,220,.8), rgba(20,220,220,.8), rgba(20,220,220,.8), rgba(20,220,220,.8)]"
+   }
+  ]
+ }, 
+ "options": { "responsive": "true",
+               "scales": 
+                {
+                "xAxes": [{
+                    "stacked": true
+                }],
+                "yAxes": [{
+                    "stacked": true
+                }]
+            }
+    }
+ }
+-->
 </canvas>
