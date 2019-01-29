@@ -95,12 +95,12 @@
                 {
                 "xAxes": [{
                     "ticks": {
-                        "beginAtZero":true
+                        "beginAtZero":"true"
                     } 
                 }],
                 "yAxes": [{
                     "ticks": {
-                        "beginAtZero":true
+                        "beginAtZero":"true"
                     } 
                 }]
             }
@@ -119,7 +119,7 @@
 <!--
 {
  "data": {
-  "labels": ["2012","2013"," 2014","2015","2016"],
+  "labels": ["2012", "2013", "2014", "2015", "2016"],
   "datasets": [
    {
     "data":[6.2, 5.2, 4.9, 4.4, 4.9],
@@ -132,12 +132,12 @@
                 {
                 "xAxes": [{
                       "ticks": {
-                        "beginAtZero":true
-                    } 
+                        "beginAtZero":"true"
+                       } 
                 }],
                 "yAxes": [{
                     "ticks": {
-                       "beginAtZero":true
+                       "beginAtZero":"true"
                     } 
                 }]
             }
