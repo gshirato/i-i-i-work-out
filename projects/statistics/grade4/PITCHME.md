@@ -76,7 +76,7 @@
 
 ### 棒グラフ
 
-他のものとの比較に役立つ
+他のデータとの比較に便利
 
 <canvas data-chart="bar">
 <!--
@@ -86,8 +86,40 @@
   "datasets": [
    {
     "data":[183.9, 183.8, 170.7, 163.8, 162.1],
-    "label":"Sports","backgroundColor":"rgba(20,220,220,.8)",
-    "title": "世界の平均身長"
+    "label":"Sports","backgroundColor":"rgba(20,220,220,.8)"
+   }
+  ]
+ }, 
+ "options": { "responsive": "true",
+               "scales": 
+                {
+                "xAxes": [{
+                    "stacked": true
+                }],
+                "yAxes": [{
+                    "stacked": true
+                }]
+            }
+    }
+ }
+-->
+</canvas>
+
++++
+
+### 折れ線グラフ
+
+時間の変化を記述するのに便利
+
+<canvas data-chart="bar">
+<!--
+{
+ "data": {
+  "labels": ["2012","2013"," 2014","2015","2016"],
+  "datasets": [
+   {
+    "data":[6.2, 5.2, 4.9, 4.4, 4.9],
+    "label":"Japan's GDP","backgroundColor":"rgba(20,220,220,.8)"
    }
   ]
  }, 
