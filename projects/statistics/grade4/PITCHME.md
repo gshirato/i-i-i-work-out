@@ -94,10 +94,14 @@
                "scales": 
                 {
                 "xAxes": [{
-                    "stacked": true
+                    "ticks": {
+                        "beginAtZero":true
+                    } 
                 }],
                 "yAxes": [{
-                    "stacked": true
+                    "ticks": {
+                        "beginAtZero":true
+                    } 
                 }]
             }
     }
@@ -127,10 +131,14 @@
                "scales": 
                 {
                 "xAxes": [{
-                    "stacked": true
+                      "ticks": {
+                        "beginAtZero":true
+                    } 
                 }],
                 "yAxes": [{
-                    "stacked": true
+                    "ticks": {
+                       "beginAtZero":true
+                    } 
                 }]
             }
     }
