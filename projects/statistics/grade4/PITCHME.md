@@ -44,15 +44,15 @@
  "options": { "responsive": "true",
                "scales": 
                 {
-                xAxes: [{
-                    stacked: true
+                "xAxes": [{
+                    "stacked": true
                 }],
-                yAxes: [{
-                    stacked: true
+                "yAxes": [{
+                    "stacked": true
                 }]
             }
     }
-}
+ }
 -->
 </canvas>
 
