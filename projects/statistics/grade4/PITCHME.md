@@ -115,7 +115,7 @@
 
 時間の変化を記述するのに便利
 
-<canvas data-chart="Line">
+<canvas data-chart="line">
 <!--
 {
  "data": {
