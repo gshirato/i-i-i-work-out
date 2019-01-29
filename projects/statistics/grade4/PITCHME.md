@@ -22,8 +22,9 @@
 <canvas data-chart="bar">
 
 
-    Soccer, Rugby, Baseball, Tennis, Hockey
-    30,     15,    20,       15,     5
+    Sports, Number, Rugby, Baseball, Tennis, Hockey
+    Soccer,     15,    20,       15,     5
+    Tennis,     15,    20,       15,     5
 
 
 </canvas>
