@@ -41,7 +41,17 @@
    }
   ]
  }, 
- "options": { "responsive": "true" }
+ "options": { "responsive": "true",
+               "scales": 
+                {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+    }
 }
 -->
 </canvas>
