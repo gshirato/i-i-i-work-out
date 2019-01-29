@@ -128,19 +128,7 @@
   ]
  }, 
  "options": { "responsive": "true",
-               "scales": 
-                {
-                "xAxes": [{
-                      "ticks": {
-                        "beginAtZero":"true"
-                       } 
-                }],
-                "yAxes": [{
-                    "ticks": {
-                       "beginAtZero":"true"
-                    } 
-                }]
-            }
+               
     }
  }
 -->
@@ -155,9 +143,8 @@
 幹葉図
 
 <left>
- 
- 3|1
- 2|222
- 1|314155
- 0|131
+ 3|1 <br>
+ 2|222 <br>
+ 1|314155 <br>
+ 0|131 <br>
 </left>
