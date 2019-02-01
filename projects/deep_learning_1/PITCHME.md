@@ -50,3 +50,144 @@ y =
 |  1  |  0  | 0 |
 |  0  |  1  | 0 |
 |  1  |  1  | 1 |
+
+これをパーセプトロンで表す<br> 
+-> 真理値表を満たすように($w_1$,$w_2$,$\theta$)を決める <br>
+-> e.g.) (0.5, 0.5, 0.7), (0.5, 0.5, 0.8)
+
++++
+
+## NAND
+
+|$x_1$|$x_2$|$y$|
+|:----|:----|--:|
+|  0  |  0  | 1 |
+|  1  |  0  | 1 |
+|  0  |  1  | 1 |
+|  1  |  1  | 0 |
+
+ANDの符号変換だけで良い<br>
+-> e.g.) (-0.5, -0.5, -0.7)
+
+---
+
+## 1.2 パーセプトロンの実装
+
+``` python
+def AND(x1, x2, w1=1, w2=1, theta=1):
+    theta = 1, 1, 1
+    y = x1*w1 + x2*w2
+    return int(y<=theta)
+```
++++
+
+### 式変換（閾値からバイアスへ）
+
+$\theta \rightarrow -b$して移項
+
+`\[
+y = 
+\begin{cases}
+    0 \ \left( b + w_1x_1 + w_2x_2 \leq 0 \right) \\
+    1 \ \left( b + w_1x_1 + w_2x_2 >    0 \right)
+\end{cases}
+\]`
+
++++
+
+### コード
+
+``` python
+def AND(x1, x2, w1=1, w2=1, b=-1):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    #閾値を超えたら(バイアスより入力の重み付き和が大きければ1を返す)
+    return int(y>0)
+
+```
++++
+
+### NAND
+``` python
+# 重みとバイアスのみ異なる！
+def NAND(x1, x2, w1=-1, w2=-1, b=1):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    return int(y>0)
+    
+def OR(x1, x2, w1=0.5, w2=0.5, b=-0.2):
+    
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    return int(y>0)
+```
+下位関数作る？
+
++++
+
+### ゲート関数
+
+``` python
+def _gate_func(x1, x2, w1, w2, b):
+    x = np.array([x1, x2])
+    w = np.array([w1, w2])
+    y = np.sum(w*x) + b
+    #閾値を超えたら(バイアスより入力の重み付き和が大きければ1を返す)
+    return int(y>0)
+    
+def AND(x1, x2):
+    w1, w2, b = 0.5, 0.5, -0.7
+    return _gate_func(x1, x2, w1, w2, b)
+
+def NAND(x1, x2):
+    w1, w2, b = -0.5, -0.5, 0.7
+    return _gate_func(x1, x2, w1, w2, b)
+    
+def OR(x1, x2):
+    w1, w2, b = 0.5, 0.5, -0.2
+    return _gate_func(x1, x2, w1, w2, b)  
+```
+
++++ 
+
+### XOR: パーセプトロンの限界
+
+入力のどちらかのみが1のときに出力1
+
+|$x_1$|$x_2$|$y$|
+|:----|:----|--:|
+|  0  |  0  | 0 |
+|  1  |  0  | 1 |
+|  0  |  1  | 1 |
+|  1  |  1  | 0 |
+
+非線形は判別不可能
+
+---
+
+## 多層パーセプトロン
+
+回路の組み合わせにより実現可能<br>
+($NAND$, $OR$, $AND$)
+
+|$x_1$|$x_2$|$s_1$|$s_2$|$y$|
+|:----|:----|:---:|:---:|--:|
+|  0  |  0  |  0  |  0  | 0 |
+|  1  |  0  |  1  |  1  | 1 |
+|  0  |  1  |  0  |  1  | 1 |
+|  1  |  1  |  0  |  1  | 0 |
+
++++
+
+``` python
+def XOR(x1, x2):
+    s1 = NAND(x1, x2)
+    s2 = OR(x1, x2)
+    y = AND(s1, s2)
+    return y
+```
