@@ -403,4 +403,174 @@ Y = identity_function(A3)
 
 +++ 実装のまとめ
 
+``` python
+def init_network():
+    network = {}
+    network['W1'] = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
+    network['b1'] = np.array([0.1, 0.2, 0.3])
+    network['W2'] = np.array([[0.1, 0.4], [0.2, 0.5], [0.3, 0.6]])
+    network['b2'] = np.array([0.1, 0.2])
+    network['W3'] = np.array([[0.1, 0.3], [0.2, 0.4]])
+    network['b3'] = np.array([0.1, 0.2])
+    return network
 
+def forward(network, x):
+    W1, W2, W3 = network['W1'], network['W2'], network['W3']
+    b1, b2, b3 = network['b1'], network['b2'], network['b3']
+    a1 = np.dot(x, W1) + b1
+    z1 = sigmoid(a1)
+    a2 = np.dot(z1, W2) + b2
+    z2 = sigmoid(a2)
+    a3 = np.dot(z2, W3) + b3
+    y = identity_function(a3)
+    return y
+
+network = init_network()
+x = np.array([1.0, 0.5])
+y = forward(network, x)
+print(y)
+```
+
++++ 
+
+#### 出力層に使う関数について
+
+一般に
+- 恒等関数: 回帰問題
+- ソフトマックス関数: 分類問題
+
++++
+
+#### ソフトマックス関数
+
+$y_k = \frac{exp(a_k){\Sigma_{i=1}^n exp(a_i)}$
+
+``` py
+def softmax(a):
+    exp_a = np.exp(a)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+```
+
+理論上は正しいが，実装上は値が大きくなりすぎてオーバーフローする
+
++++ 
+
+#### 改善策
+`\[
+y_k = \frac{exp(a_k){\Sigma_{i=1}^n exp(a_i)} \\
+    = \frac{C exp(a_k){C \Sigma_{i=1}^n exp(a_i)} \\
+    = \frac{exp(a_k + logC){\Sigma_{i=1}^n exp(a_i+logC)}
+\]`
+ここで$logC = C'$とする．$C'$には入力の中での最大値を使うことが一般的
+
+``` py
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+```
+
++++
+
+#### ソフトマックス関数の特徴
+
+- 出力は0から1.0までの実数
+- 出力の総和は1
+    - よって，出力結果を確率として解釈可能
+- ? 単純な割合ではいけないのか?（負の値に対する処理のため？）
+  
+
+--- 
+
+## 実データ例: MNIST
+
++++
+
+### データの読み込み
+
+``` py
+import sys, os
+sys.path.append(os.pardir) # 親ディレクトリのファイルをインポートするため
+from dataset.mnist import load_mnist
+
+(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+# 28x28=784画素に関するデータが6万文字分ある
+# flatten=Trueのため，画素は1次元で表現される
+print(x_train.shape) # (60000, 784)
+print(t_train.shape) # (60000,)
+print(x_test.shape) # (10000, 784)
+print(t_test.shape) # (10000,)
+
+```
+
++++
+
+### データの迅速な取り出しのために
+
+1回目はネット接続で読み込むため，時間がかかるが2回目は`pickle`ファイルを読み込むだけなため，処理が早く終了する．
+
+``` py
+def init_network():
+    with open("sample_weight.pkl", 'rb') as f:
+        network = pickle.load(f)
+    return network
+```
+
++++
+
+予測 = NNを回してsoftmaxで最も高い値を持つものを最も出る確率が高いとみなす
+
+```py
+x, t = get_data()
+network = init_network()
+accuracy_cnt = 0
+for i in range(len(x)):
+    y = predict(network, x[i])
+    p = np.argmax(y) # 最も確率の高い要素のインデックスを取得
+    if p == t[i]:
+        accuracy_cnt += 1
+print("Accuracy:" + str(float(accuracy_cnt) / len(x)))
+```
+
+大体94%くらい
+
+---
+
+### 精度向上に向けて
+
++++ 
+
+#### バッチ処理
+
+##### 入力データと重みパラメータの形状に注目する
+データをまとまりで処理する（複数画像を同時に処理する）
+
++++ 
+
+``` py
+x, t = get_data()
+network = init_network()
+batch_size = 100 # バッチの数
+accuracy_cnt = 0
+for i in range(0, len(x), batch_size):
+    #batch_size分のデータを入力とする
+    x_batch = x[i:i+batch_size]
+    y_batch = predict(network, x_batch)
+    p = np.argmax(y_batch, axis=1)
+    accuracy_cnt += np.sum(p == t[i:i+batch_size])
+print("Accuracy:" + str(float(accuracy_cnt) / len(x)))
+```
+
+
+---
+
+##　3.ニューラルネットワークの学習
+
+トレーニングデータから最適な重みパラメータの値を自動で獲得
+
+- 損失関数を指標として学習する
+- 勾配法を用いる
