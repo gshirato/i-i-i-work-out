@@ -568,9 +568,64 @@ print("Accuracy:" + str(float(accuracy_cnt) / len(x)))
 
 ---
 
-##　3.ニューラルネットワークの学習
+## 3.ニューラルネットワークの学習
 
 トレーニングデータから最適な重みパラメータの値を自動で獲得
 
 - 損失関数を指標として学習する
 - 勾配法を用いる
+- 数千，数万のパラメータを手動で設定することは不可能
+
++++
+
+### Data-driven
+
+手書き数字を判別するアルゴリズムを考えるのは難しい．<br>
+→データを利用する!
+
+- 特徴量を使う(データをベクトルに変換)
+    - 画像解析では...
+        - SIFT
+        - SURF
+        - HOG
+- SVMやKNNで学習
+
+- Deep Learningは画像をそのまんま全て学習！
+
+---
+
+### モデル評価
+
+汎化能力：訓練データに含まれないデータに対しての能力
+
+損失関数(loss function)：モデルの性能評価をする
+
++++
+
+#### 2乗和誤差(Mean Squared Error)
+
+$E=\frac 1 2 \Sigma_k{(y_k-t_k)^2}$
+
+``` python
+def mean_squared_error(y, t):
+    return 0.5 * np.sum((y-t)**2)
+```
+
++++ 
+
+#### 交差エントロピー誤差(Cross Entropy Error)
+
+$E=-\Sigma_k{t_k log y_k}$
+
+正解ラベルに対応する出力が小さければ値が大きくなる
+
+``` python
+def cross_entropy_error(y, t):
+    #np.log(0)->-infを防ぐため
+    delta = 1e-7
+    return -np.sum(t*np.log(y + delta)
+```
+
++++
+
+### ミニバッチ学習
