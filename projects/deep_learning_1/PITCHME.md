@@ -768,7 +768,7 @@ return x[0]**2 + x[1]**2
 # 変数が1つだけの関数を定義して，その関数について微分を求める
 # 入力に対して下のような関数を定義するのは少し面倒
 def function_tmp2(x1):
-return 3.0**2.0 + x1*x1
+    return 3.0**2.0 + x1*x1
 >>> numerical_diff(function_tmp2, 4.0)
 7.999
 ```
@@ -806,8 +806,8 @@ def numerical_gradient(f, x):
 +++
 
 `\[
-x_0 = x_0 - \eta \frac{\deltaf}{\deltax_0}
-x_1 = x_1 - \eta \frac{\deltaf}{\deltax_1}
+x_0 = x_0 - \eta \frac{\delta f}{\delta x_0} \
+x_1 = x_1 - \eta \frac{\delta f}{\delta x_1}
 \]`
 
 $\eta$: 学習率(learning rate)
