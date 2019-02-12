@@ -1076,3 +1076,107 @@ $\frac{\partial z}{\partial x} = 2(x+y)$
 
 ### レイヤの実装
 
++++
+
+乗算レイヤ
+
+``` python
+class  MulLayer:
+    def __init__(self):
+        self.x = None
+        self.y = None
+    
+    def forward(self, x, y):
+        self.x = x
+        self.y = y
+        out = x * y
+
+    def backward(self, dout):
+        # xとyをひっくり返す
+        dx = dout * self.y
+        dy = dout * self.x
+        
+        return dx, dy
+```
+
++++
+
+加算レイヤ
+``` python
+class AddLayer:
+    def __init__(self):
+        pass
+        
+    def forward(self, x, y):
+        out = x + y
+        return out
+        
+    def backward(self, dout):
+        dx = dout * 1
+        dy = dout * 1
+        return dx, dy
+```
+
++++
+
+活性化関数レイヤ
+`\[
+y = 
+\begin{cases}
+    x \ \left( x    > 0 \right) \\
+    0 \ \left( x \leq 0 \right)
+\end{cases}
+\]`
+
+
+`\[
+\frac{\partial y}{\partial x} = 
+\begin{cases}
+    1 \ \left( x    > 0 \right) \\
+    0 \ \left( x \leq 0 \right)
+\end{cases}
+\]`
+
+``` python
+class Relu:
+    def __init__(self):
+        self.mask = None
+        
+    def forward(self, x):
+        self.mask = (x <= 0)
+        out = x.copy()
+        out[self.mask] = 0
+        
+        return out
+        
+    def backward(self, dout):
+        dout[self.mask] = 0
+        dx = dout
+        
+        return dx
+```
+
++++
+
+Sigmoid レイヤ
+
+``` python
+
+class Sigmoid:
+    def __init__(self):
+        self.out = None
+    
+    def forward(self, x):
+        out = 1 / (1 + np.exp(-x))
+        self.out = out
+        return out
+    
+    def backward(self, dout):
+        dx = dout * (1.0 - self.out) * self.out
+        return dx
+```
+
++++
+
+Affine/Softmax レイヤ
+
