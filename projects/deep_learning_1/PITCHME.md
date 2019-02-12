@@ -711,12 +711,12 @@ def cross_entropy_error(y, t):
 ``` python
 #Bad Implementation
 def numerical_diff(f,x):
-    #値が小さすぎて丸め誤差が生じる
     h = 10e-50
     
-    #hをあまり小さくできないため誤差が大きい
     return (f(x+h)-f(x))/h
 ```
+@[3](値が小さすぎて丸め誤差が生じる)
+@[5](hをあまり小さくできないため誤差が大きい)
 
 +++
 
@@ -998,20 +998,81 @@ for i in range(iters_num):
 --- 
 ## 5.誤差逆伝播法
 
-+++ ### 誤差逆伝播法を理解するために
++++ 
+### 誤差逆伝播法を理解するために
 
 - 数式
 - 計算グラフ
 
-<div class="mermaid">
-  graph LR;
-    A>開始] --> |"順調"|B[終わって暇];
-    A -.-> C{Dはよ};
-    A --> D(実装が遅れた);
-    B --> F;
-    C --> F;
-    D ==> E((Dはよ));
-    D ==> C;
-    E --> F{>>デスマ<<};
-    click B "https://www.bing.com/" "リンクもはれる";
-</div>
++++
+
+### 計算グラフを使って問題を解く
+
+1. 計算グラフを構築
+2. 計算グラフ上で計算を**左から右**へ進める |
+- 順伝播！|
+
+右から左の逆伝播を考える
+
++++
+### 特徴
+局所的な計算を伝播するだけで最終的な計算結果を得る \ 
+
+- 問題の単純化が可能
+- 計算過程を文字出来る |
+- 微分が効率良く出来る
+
++++
+りんごの値段が変化した際にいくら支払金に影響するか考える
+
+=「りんごの値段に関する支払金額の微分」
+
+りんごの値段$x$、支払金額を$L$としたときの、$\frac{\partial L}{\partial x}$
+
++++
+
+### 連鎖率
+
+局所的な微分は「連鎖律(chain rule)」で伝播する
+
++++
+
+合成関数$z = (x+y)^2$の場合
+
+$z = t^2$ \ 
+$t = x+y$
+
+>ある関数が合成関数で表される場合、その合成関数の微分は、合成関数を構成するそれぞれの関数の微分の積によって表すことができる。
+
+$\frac{\partial z}{\partial x} = \frac{\partial z}{\partial t}\frac{\partial t}{\partial x}$
+
+$\frac{\partial z}{\partial t} = 2t$ 
+$\frac{\partial t}{\partial x} = 1$
+
+$\frac{\partial z}{\partial x} = 2(x+y)$
+
++++
+
+加算ノードの逆伝播
+
+- $\frac{\partial z}{\partial x} = 1$ 
+- $\frac{\partial z}{\partial y} = 1$ |
+
+上流から来たものをそのまま下へ流す
+
++++
+
+乗算ノードの逆伝播
+
+- $\frac{\partial z}{\partial x} = y$ 
+- $\frac{\partial z}{\partial y} = x$ |
+
+入力信号をひっくり返したものをかける
+
+??? りんごの例
+
+
++++
+
+### レイヤの実装
+
