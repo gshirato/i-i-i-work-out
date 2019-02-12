@@ -759,8 +759,8 @@ $f(x_0,x_1) = x_0^2 + x_1^2$
 
 ``` python
 def f2(x):
-return x[0]**2 + x[1]**2
-#return np.sum(x**2)
+    return x[0]**2 + x[1]**2
+    #return np.sum(x**2)
 ```
 
 ``` python
@@ -806,7 +806,8 @@ def numerical_gradient(f, x):
 +++
 
 `\[
-x_0 = x_0 - \eta \frac{\delta f}{\delta x_0} \
+x_0 = x_0 - \eta \frac{\delta f}{\delta x_0} \ 
+
 x_1 = x_1 - \eta \frac{\delta f}{\delta x_1}
 \]`
 
