@@ -995,7 +995,8 @@ for i in range(iters_num):
         print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 ```
 
---- ## 5.誤差逆伝播法
+--- 
+## 5.誤差逆伝播法
 
 +++ ### 誤差逆伝播法を理解するために
 
