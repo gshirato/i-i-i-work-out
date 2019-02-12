@@ -626,6 +626,246 @@ def cross_entropy_error(y, t):
     return -np.sum(t*np.log(y + delta)
 ```
 
-+++
+---
 
 ### ミニバッチ学習
+
++++
+
+訓練データを使った学習：訓練データに対する損失関数をできるだけ小さくするパラメータを探し出す．<br>
+→損失関数は全ての訓練データを対象として求める必要がある．
+
+交差エントロピー誤差の場合<br>
+$E=-\frac{1}{N}\Sigma_n\Sigma_k{t_{nk} log y_{nk}}$
+
++++
+
+訓練データが例えば6万個あったとき，全てを対象にするのは時間がかかる．<br>
+一部のデータを全体の近似として利用する．この一部のデータを**ミニバッチ**という．<br>
+大量のデータから例えば100枚を**無作為に**取り出す必要がある．
+
++++
+
+全データをインポート
+
+``` python
+import sys, os
+sys.path.append(os.pardir) #dataset.mnist読み込みのため
+import numpy as np
+from dataset.mnist import load_mnist
+
+(x_train, t_train), (x_test, t_test) = \
+load_mnist(normalize=True, one_hot_label=True)
+```
+
++++
+
+ランダムに100個インポート
+
+```
+train_size = x_train.shape[0]
+batch_size = 10
+batch_mask = np.random.choice(train_size, batch_size)
+x_batch = x_train[batch_mask]
+t_batch = t_train[batch_mask]
+```
++++
+
+交差エントロピー誤差の実装
+```
+def cross_entropy_error(y, t):
+    if y.ndim == 1:
+        t = t.reshape(1, t.size)
+        y = y.reshape(1, y.size)
+    batch_size = y.shape[0]
+    #(one-hot)
+    return -np.sum(t * np.log(y + 1e-7)) / batch_size
+    #2や7など正解をそのまま返す場合
+    return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
+```
+
++++
+
+「認識精度」ではなく「損失関数」で評価する理由
+
+>認識精度を指標にすると，パラメータの微分がほとんどの場所で0になってしまう
+
+100枚の写真を認識するとき，認識精度は$33%, 34%, ...$と不連続な変化をする．
+
+? 認識精度関数のような形で連続的変化をする関数を作ればよいのでは？
+
+---
+
+### 数値微分
+
+勾配法：勾配を利用する
+
++++
+
+定義
+
+`\[
+\frac{df(x)}{dx} = lim_{h\to0}{\frac{f(x+h)-f(x)}{h}}
+\]`
+
+``` python
+#Bad Implementation
+def numerical_diff(f,x):
+    #値が小さすぎて丸め誤差が生じる
+    h = 10e-50
+    
+    #hをあまり小さくできないため誤差が大きい
+    return (f(x+h)-f(x))/h
+```
+
++++
+
+改善
+
+``` python 
+
+def numerical_diff(f, x):
+    h = 1e-4
+    #中心差分を取る
+    return (f(x+h)-f(x-h) / (2*h)
+```
+
++++
+
+例
+
+$ y = 0.01x^2 + 0.1x$
+
+``` python
+def f1(x):
+    return 0.01*x**2 + 0.1*x
+```
+
+``` python
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0.0, 20.0, 0.1)
+y = f1(x)
+plt.plot(x, y)
+plt.show()
+```
+
++++
+
+2変数の二乗和の偏微分
+
+$f(x_0,x_1) = x_0^2 + x_1^2$
+
+``` python
+def f2(x):
+return x[0]**2 + x[1]**2
+#return np.sum(x**2)
+```
+
+``` python
+
+# 変数が1つだけの関数を定義して，その関数について微分を求める
+# 入力に対して下のような関数を定義するのは少し面倒
+def function_tmp2(x1):
+return 3.0**2.0 + x1*x1
+>>> numerical_diff(function_tmp2, 4.0)
+7.999
+```
+
++++
+
+勾配の計算
+
+``` python
+def numerical_gradient(f, x):
+    h = 1e-4
+    # xと同じ形状の配列
+    grad = np.zeros_like(x)
+    
+    for idx in range(x.size):
+        tmp_val = x[idx]
+        
+        #f(x+h)
+        x[idx] = tmp_val + h
+        fxh1 = f(x)
+        
+        #f(x-h)
+        x[idx] = tmp_val - h
+        fxh2 = f(x)
+        
+        grad[idx] = (fxh1 - fxh2) / (2*h)
+        x[idx] = tmp_val
+    return grad
+```
+
++++
+
+### 勾配法
+各地点においてその関数を減少させる方向を示す
++++
+
+`\[
+x_0 = x_0 - \eta \frac{\deltaf}{\deltax_0}
+x_1 = x_1 - \eta \frac{\deltaf}{\deltax_1}
+\]`
+
+$\eta$: 学習率(learning rate)
+
+個の更新ステップを繰り返す行う
+
++++
+
+Pythonによる実装
+
+``` python
+def gradient_dscent(f, init_x, lr=0.01, step_num=100):
+    x = init_x
+    
+    for i in range(step_num):
+        grad = numerical_gradient(f, x)
+        x -= lr * grad
+    return x
+```
+
++++ 
+
+SimpleNetクラスの実装
+
+``` python
+class SimpleNet:
+    def __init__(self):
+        self.W = np.random.randn(2, 3)#ガウス分布で初期化
+    
+    def predict(self, x):
+        return np.dot(x, self.W)
+        
+    def loss(self, x, t):
+        z = self.predict(x)
+        y = softmax(z)
+        loss = cross_entropy_error(y, t)
+        
+        return loss        
+```
+
+``` python
+
+net = SimpleNet()
+print(net.W)
+p = net.predict([0.6, 0.9])
+
+np.argmax(p) 最大値のインデックス
+
+t = np.array([0, 0, 1])#正解
+net.loss(x, t)
+```
+
+---
+
+### 学習アルゴリズム
+
+確率的勾配降下法(SGD: Stochastic Gradient Descent)
+
++++
+
+
